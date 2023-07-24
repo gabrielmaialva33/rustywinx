@@ -1,9 +1,9 @@
 extern crate dotenv;
 
-use teloxide::prelude::*;
-use log::info;
 use dotenv::dotenv;
+use log::info;
 use std::env;
+use teloxide::prelude::*;
 
 #[tokio::main]
 async fn main() {
@@ -18,5 +18,6 @@ async fn main() {
     teloxide::repl(bot, |bot: Bot, message: Message| async move {
         bot.send_dice(message.chat.id).await?;
         Ok(())
-    }).await;
+    })
+    .await;
 }
