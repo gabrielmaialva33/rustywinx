@@ -8,7 +8,6 @@ use teloxide::prelude::*;
 #[tokio::main]
 async fn main() {
     dotenv().ok();
-
     pretty_env_logger::init();
 
     info!("Starting bot...");
