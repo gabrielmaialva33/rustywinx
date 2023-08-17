@@ -1,33 +1,34 @@
-mod commands;
-mod handlers;
-
 extern crate dotenv;
 
 use dotenv::dotenv;
 use log::info;
 use std::env;
-use std::error::Error;
 use teloxide::{prelude::*, utils::command::BotCommands};
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    dotenv().ok();
+async fn main() {
+    match dotenv() {
+        Ok(_) => info!("Loaded dotenv"),
+        Err(_) => info!("Failed to load dotenv"),
+    }
+
     pretty_env_logger::init_timed();
 
     info!("Starting bot...");
 
     let bot = Bot::new(env::var("BOT_TOKEN").unwrap());
+    bot.set_my_commands(Command::bot_commands()).await.unwrap();
 
-    let handler = dptree::entry()
-        .branch(Update::filter_message().endpoint(handlers::message::message_handler));
+    let me = bot.get_me().await.unwrap().mention();
+    info!("... {} started!", me);
 
-    Dispatcher::builder(bot, handler)
-        .enable_ctrlc_handler()
-        .build()
-        .dispatch()
-        .await;
-
-    Ok(())
+    teloxide::repl(bot, |bot: Bot, msg: Message| async move {
+        bot.send_message(msg.chat.id, "Hello, World!")
+            .send()
+            .await?;
+        Ok(())
+    })
+    .await
 }
 
 #[derive(BotCommands, Clone)]
