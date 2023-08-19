@@ -2,7 +2,9 @@
 extern crate log;
 
 pub mod bot;
-pub mod commands;
 pub mod config;
-
-pub mod handlers;
+mod handlers;
+mod commands;
+mod dispatcher;
+mod modules;
+mod types;

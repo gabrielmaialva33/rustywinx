@@ -5,7 +5,7 @@ authors = ["gabrielmaialva33 <gabrielmaialva33@gmail.com>"]
 edition = "2021"
 
 [lib]
-name = "lib"
+name = "rusty_core"
 path = "src/lib.rs"
 
 [[bin]]
